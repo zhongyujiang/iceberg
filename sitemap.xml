@@ -2,192 +2,187 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://iceberg.apache.org/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/api/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/aws/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/benchmarks/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/blogs/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/community/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/configuration/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/custom-catalog/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/evolution/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/flink/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/getting-started/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/hive/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/how-to-release/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/java-api-quickstart/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/jdbc/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/maintenance/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/nessie/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/partitioning/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/performance/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/python-api-intro/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/python-feature-support/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/python-quickstart/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/releases/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/reliability/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/schemas/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/security/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/snapshots/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-configuration/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-ddl/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-procedures/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-queries/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-structured-streaming/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spark-writes/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/spec/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/terms/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/trademarks/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://iceberg.apache.org/trino/</loc>
-         <lastmod>2021-08-01</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://iceberg.apache.org/why-iceberg/</loc>
-         <lastmod>2021-08-01</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

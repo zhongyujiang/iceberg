@@ -419,6 +419,7 @@
                 <li class="third-level"><a href="#catalog-configuration">Catalog configuration</a></li>
                 <li class="third-level"><a href="#using-catalogs">Using catalogs</a></li>
                 <li class="third-level"><a href="#replacing-the-session-catalog">Replacing the session catalog</a></li>
+                <li class="third-level"><a href="#using-catalog-specific-hadoop-configuration-values">Using catalog specific Hadoop configuration values</a></li>
                 <li class="third-level"><a href="#loading-a-custom-catalog">Loading a custom catalog</a></li>
                 <li class="third-level"><a href="#catalogs-in-spark-24">Catalogs in Spark 2.4</a></li>
             <li class="second-level"><a href="#sql-extensions">SQL Extensions</a></li>
@@ -532,6 +533,10 @@ spark.sql.catalog.spark_catalog.type = hive
 </code></pre>
 <p>Spark&rsquo;s built-in catalog supports existing v1 and v2 tables tracked in a Hive Metastore. This configures Spark to use Iceberg&rsquo;s <code>SparkSessionCatalog</code> as a wrapper around that session catalog. When a table is not an Iceberg table, the built-in catalog will be used to load it instead.</p>
 <p>This configuration can use same Hive Metastore for both Iceberg and non-Iceberg tables.</p>
+<h3 id="using-catalog-specific-hadoop-configuration-values">Using catalog specific Hadoop configuration values<a class="headerlink" href="#using-catalog-specific-hadoop-configuration-values" title="Permanent link">&para;</a></h3>
+<p>Similar to configuring Hadoop properties by using <code>spark.hadoop.*</code>, it&rsquo;s possible to set per-catalog Hadoop configuration values when using Spark by adding the property for the catalog with the prefix <code>spark.sql.catalog.(catalog-name).hadoop.*</code>. These properties will take precedence over values configured globally using <code>spark.hadoop.*</code> and will only affect Iceberg tables.</p>
+<pre><code class="language-plain">spark.sql.catalog.hadoop_prod.hadoop.fs.s3a.endpoint = http://aws-local:9000
+</code></pre>
 <h3 id="loading-a-custom-catalog">Loading a custom catalog<a class="headerlink" href="#loading-a-custom-catalog" title="Permanent link">&para;</a></h3>
 <p>Spark supports loading a custom Iceberg <code>Catalog</code> implementation by specifying the <code>catalog-impl</code> property.
 When <code>catalog-impl</code> is set, the value of <code>type</code> is ignored. Here is an example:</p>
