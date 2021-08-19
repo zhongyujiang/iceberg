@@ -121,6 +121,12 @@
                 
                 
                 
+                    <li >
+                        <a href="../getting-started/">Getting Started</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -172,77 +178,92 @@
                 
                 
                 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Spark <b class="caret"></b></a>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Engines <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
     <a href="../getting-started/">Getting Started</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-configuration/">Configuration</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-ddl/">DDL</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/">Queries</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-writes/">Writes</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-procedures/">Maintenance Procedures</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-structured-streaming/">Structured Streaming</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/#time-travel">Time Travel</a>
 </li>
 
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="../flink/">Flink</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Hive</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://prestodb.io/docs/current/connector/iceberg.html">PrestoDB</a>
+</li>
+
                         
                         </ul>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../flink/">Flink</a>
-                    </li>
-                
-                
-                
-                    <li class="active">
-                        <a href="./">Hive</a>
                     </li>
                 
                 
@@ -517,7 +538,7 @@ There are two ways to enable Hive support: globally in Hadoop Configuration and 
 For example, setting this in the <code>hive-site.xml</code> loaded by Spark will enable the storage handler for all tables created by Spark.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>When using Hive with Tez in <code>0.11.x</code> releases, you also have to disable vectorization (<code>hive.vectorized.execution.enabled=false</code>)</p>
+<p>Starting with Apache Iceberg <code>0.11.0</code>, when using Hive with Tez you also have to disable vectorization (<code>hive.vectorized.execution.enabled=false</code>).</p>
 </div>
 <h4 id="table-property-configuration">Table property configuration<a class="headerlink" href="#table-property-configuration" title="Permanent link">&para;</a></h4>
 <p>Alternatively, the property <code>engine.hive.enabled</code> can be set to <code>true</code> and added to the table properties when creating the Iceberg table. 

@@ -121,6 +121,12 @@
                 
                 
                 
+                    <li >
+                        <a href="../getting-started/">Getting Started</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -173,76 +179,91 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Spark <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Engines <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
     <a href="../getting-started/">Getting Started</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-configuration/">Configuration</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-ddl/">DDL</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/">Queries</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-writes/">Writes</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-procedures/">Maintenance Procedures</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-structured-streaming/">Structured Streaming</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/#time-travel">Time Travel</a>
 </li>
 
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="../flink/">Flink</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../hive/">Hive</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://prestodb.io/docs/current/connector/iceberg.html">PrestoDB</a>
+</li>
+
                         
                         </ul>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../flink/">Flink</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../hive/">Hive</a>
                     </li>
                 
                 
@@ -481,7 +502,7 @@ Here are some examples.</p>
 <h3 id="spark">Spark<a class="headerlink" href="#spark" title="Permanent link">&para;</a></h3>
 <p>For example, to use AWS features with Spark 3 and AWS clients version 2.15.40, you can start the Spark SQL shell with:</p>
 <pre><code class="language-sh"># add Iceberg dependency
-ICEBERG_VERSION=0.11.1
+ICEBERG_VERSION=0.12.0
 DEPENDENCIES=&quot;org.apache.iceberg:iceberg-spark3-runtime:$ICEBERG_VERSION&quot;
 
 # add AWS dependnecy
@@ -508,7 +529,7 @@ spark-sql --packages $DEPENDENCIES \
 <h3 id="flink">Flink<a class="headerlink" href="#flink" title="Permanent link">&para;</a></h3>
 <p>To use AWS module with Flink, you can download the necessary dependencies and specify them when starting the Flink SQL client:</p>
 <pre><code class="language-sh"># download Iceberg dependency
-ICEBERG_VERSION=0.11.1
+ICEBERG_VERSION=0.12.0
 MAVEN_URL=https://repo1.maven.org/maven2
 ICEBERG_MAVEN_URL=$MAVEN_URL/org/apache/iceberg
 wget $ICEBERG_MAVEN_URL/iceberg-flink-runtime/$ICEBERG_VERSION/iceberg-flink-runtime-$ICEBERG_VERSION.jar
@@ -811,12 +832,14 @@ Here are the configurations that users can tune related to this feature:</p>
 User can choose the ACL level by setting the <code>s3.acl</code> property.
 For more details, please read <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html">S3 ACL Documentation</a>.</p>
 <h3 id="object-store-file-layout">Object Store File Layout<a class="headerlink" href="#object-store-file-layout" title="Permanent link">&para;</a></h3>
-<p>S3 and many other cloud storage services <a href="https://aws.amazon.com/premiumsupport/knowledge-center/s3-request-limit-avoid-throttling/">throttle requests based on object prefix</a>. 
-This means data stored in a traditional Hive storage layout has bad read and write throughput since data files of the same partition are placed under the same prefix.
-Iceberg by default uses the Hive storage layout, but can be switched to use a different <code>ObjectStoreLocationProvider</code>.
-In this mode, a hash string is added to the beginning of each file path, so that files are equally distributed across all prefixes in an S3 bucket.
-This results in minimized throttling and maximized throughput for S3-related IO operations.
-Here is an example Spark SQL command to create a table with this feature enabled:</p>
+<p>S3 and many other cloud storage services <a href="https://aws.amazon.com/premiumsupport/knowledge-center/s3-request-limit-avoid-throttling/">throttle requests based on object prefix</a>.
+Data stored in S3 with a traditional Hive storage layout can face S3 request throttling as objects are stored under the same filepath prefix.</p>
+<p>Iceberg by default uses the Hive storage layout, but can be switched to use the <code>ObjectStoreLocationProvider</code>. 
+With <code>ObjectStoreLocationProvider</code>, a determenistic hash is generated for each stored file, with the hash appended 
+directly after the <code>write.object-storage.path</code>. This ensures files written to s3 are equally distributed across multiple <a href="https://aws.amazon.com/premiumsupport/knowledge-center/s3-object-key-naming-pattern/">prefixes</a> in the S3 bucket. Resulting in minimized throttling and maximized throughput for S3-related IO operations. When using <code>ObjectStoreLocationProvider</code> having a shared and short <code>write.object-storage.path</code> across your Iceberg tables will improve performance.</p>
+<p>For more information on how S3 scales API QPS, checkout the 2018 re:Invent session on <a href="https://youtu.be/rHeTn9pHNKo?t=3219">Best Practices for Amazon S3 and Amazon S3 Glacier</a>. At <a href="https://youtu.be/rHeTn9pHNKo?t=3219">53:39</a> it covers how S3 scales/partitions &amp; at <a href="https://youtu.be/rHeTn9pHNKo?t=3290">54:50</a> it discusses the 30-60 minute wait time before new partitions are created.</p>
+<p>To use the <code>ObjectStorageLocationProvider</code> add <code>'write.object-storage.enabled'=true</code> in the table&rsquo;s properties. 
+Below is an example Spark SQL command to create a table using the <code>ObjectStorageLocationProvider</code>:</p>
 <pre><code class="language-sql">CREATE TABLE my_catalog.my_ns.my_table (
     id bigint,
     data string,
@@ -827,6 +850,16 @@ OPTIONS (
     'write.object-storage.path'='s3://my-table-data-bucket')
 PARTITIONED BY (category);
 </code></pre>
+<p>We can then insert a single row into this new table</p>
+<pre><code class="language-SQL">INSERT INTO my_catalog.my_ns.my_table VALUES (1, &quot;Pizza&quot;, &quot;orders&quot;);
+</code></pre>
+<p>Which will write the data to S3 with a hash (<code>2d3905f8</code>) appended directly after the <code>write.object-storage.path</code>, ensuring reads to the table are spread evenly  across <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html">S3 bucket prefixes</a>, and improving performance.</p>
+<pre><code>s3://my-table-data-bucket/2d3905f8/my_ns.db/my_table/category=orders/00000-0-5affc076-96a4-48f2-9cd2-d5efbc9f0c94-00001.parquet
+</code></pre>
+<p>Note, the path resolution logic for <code>ObjectStoreLocationProvider</code> is as follows:
+- if <code>write.object-storage.path</code> is set, use it
+- if not found, fallback to <code>write.folder-storage.path</code>
+- if not found, use <code>&lt;tableLocation&gt;/data</code></p>
 <p>For more details, please refer to the <a href="../custom-catalog/#custom-location-provider-implementation">LocationProvider Configuration</a> section.  </p>
 <h3 id="s3-strong-consistency">S3 Strong Consistency<a class="headerlink" href="#s3-strong-consistency" title="Permanent link">&para;</a></h3>
 <p>In November 2020, S3 announced <a href="https://aws.amazon.com/s3/consistency/">strong consistency</a> for all read operations, and Iceberg is updated to fully leverage this feature.
@@ -888,7 +921,7 @@ This also serves as an example for users who would like to implement their own A
 <p>By using this client factory, an STS client is initialized with the default credential and region to assume the specified role.
 The Glue, S3 and DynamoDB clients are then initialized with the assume-role credential and region to access resources.
 Here is an example to start Spark shell with this client factory:</p>
-<pre><code class="language-shell">spark-sql --packages org.apache.iceberg:iceberg-spark3-runtime:0.11.1,software.amazon.awssdk:bundle:2.15.40 \
+<pre><code class="language-shell">spark-sql --packages org.apache.iceberg:iceberg-spark3-runtime:0.12.0,software.amazon.awssdk:bundle:2.15.40 \
     --conf spark.sql.catalog.my_catalog=org.apache.iceberg.spark.SparkCatalog \
     --conf spark.sql.catalog.my_catalog.warehouse=s3://my-bucket/my/key/prefix \    
     --conf spark.sql.catalog.my_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog \
@@ -905,7 +938,7 @@ Here is an example to start Spark shell with this client factory:</p>
 <pre><code class="language-sh">#!/bin/bash
 
 AWS_SDK_VERSION=2.15.40
-ICEBERG_VERSION=0.11.1
+ICEBERG_VERSION=0.12.0
 MAVEN_URL=https://repo1.maven.org/maven2
 ICEBERG_MAVEN_URL=$MAVEN_URL/org/apache/iceberg
 AWS_MAVEN_URL=$MAVEN_URL/software/amazon/awssdk

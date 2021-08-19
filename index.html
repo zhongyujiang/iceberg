@@ -121,6 +121,12 @@
                 
                 
                 
+                    <li >
+                        <a href="getting-started/">Getting Started</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -173,76 +179,91 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Spark <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Engines <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
     <a href="getting-started/">Getting Started</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-configuration/">Configuration</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-ddl/">DDL</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-queries/">Queries</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-writes/">Writes</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-procedures/">Maintenance Procedures</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-structured-streaming/">Structured Streaming</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="spark-queries/#time-travel">Time Travel</a>
 </li>
 
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="flink/">Flink</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="hive/">Hive</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://prestodb.io/docs/current/connector/iceberg.html">PrestoDB</a>
+</li>
+
                         
                         </ul>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="flink/">Flink</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="hive/">Hive</a>
                     </li>
                 
                 
@@ -444,14 +465,14 @@
   -->
 
 <h1 id="_1"><img alt="Iceberg" src="img/Iceberg-logo.png" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p><strong>Apache Iceberg is an open table format for huge analytic datasets.</strong> Iceberg adds tables to Trino and Spark that use a high-performance format that works just like a SQL table.</p>
+<p><strong>Apache Iceberg is an open table format for huge analytic datasets.</strong> Iceberg adds tables to compute engines including Spark, Trino, PrestoDB, Flink and Hive using a high-performance table format that works just like a SQL table.</p>
 <h3 id="user-experience">User experience<a class="headerlink" href="#user-experience" title="Permanent link">&para;</a></h3>
 <p>Iceberg avoids unpleasant surprises. Schema evolution works and won&rsquo;t inadvertently un-delete data. Users don&rsquo;t need to know about partitioning to get fast queries.</p>
 <ul>
 <li><a href="evolution#schema-evolution">Schema evolution</a> supports add, drop, update, or rename, and has <a href="evolution#correctness">no side-effects</a></li>
 <li><a href="partitioning">Hidden partitioning</a> prevents user mistakes that cause silently incorrect results or extremely slow queries</li>
 <li><a href="evolution#partition-evolution">Partition layout evolution</a> can update the layout of a table as data volume or query patterns change</li>
-<li><a href="spark#time-travel">Time travel</a> enables reproducible queries that use exactly the same table snapshot, or lets users easily examine changes</li>
+<li><a href="spark-queries#time-travel">Time travel</a> enables reproducible queries that use exactly the same table snapshot, or lets users easily examine changes</li>
 <li>Version rollback allows users to quickly correct problems by resetting tables to a good state</li>
 </ul>
 <h3 id="reliability-and-performance">Reliability and performance<a class="headerlink" href="#reliability-and-performance" title="Permanent link">&para;</a></h3>

@@ -121,6 +121,12 @@
                 
                 
                 
+                    <li >
+                        <a href="../getting-started/">Getting Started</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -173,76 +179,91 @@
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Spark <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Engines <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
     <a href="../getting-started/">Getting Started</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-configuration/">Configuration</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-ddl/">DDL</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/">Queries</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-writes/">Writes</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-procedures/">Maintenance Procedures</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-structured-streaming/">Structured Streaming</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/#time-travel">Time Travel</a>
 </li>
 
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="../flink/">Flink</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../hive/">Hive</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://prestodb.io/docs/current/connector/iceberg.html">PrestoDB</a>
+</li>
+
                         
                         </ul>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../flink/">Flink</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../hive/">Hive</a>
                     </li>
                 
                 
@@ -452,7 +473,7 @@
 <h2 id="recommended-maintenance">Recommended Maintenance<a class="headerlink" href="#recommended-maintenance" title="Permanent link">&para;</a></h2>
 <h3 id="expire-snapshots">Expire Snapshots<a class="headerlink" href="#expire-snapshots" title="Permanent link">&para;</a></h3>
 <p>Each write to an Iceberg table creates a new <em>snapshot</em>, or version, of a table. Snapshots can be used for time-travel queries, or the table can be rolled back to any valid snapshot.</p>
-<p>Snapshots accumulate until they are expired by the <a href="../javadoc/0.11.1/org/apache/iceberg/Table.html#expireSnapshots--"><code>expireSnapshots</code></a> operation. Regularly expiring snapshots is recommended to delete data files that are no longer needed, and to keep the size of table metadata small.</p>
+<p>Snapshots accumulate until they are expired by the <a href="../javadoc/0.12.0/org/apache/iceberg/Table.html#expireSnapshots--"><code>expireSnapshots</code></a> operation. Regularly expiring snapshots is recommended to delete data files that are no longer needed, and to keep the size of table metadata small.</p>
 <p>This example expires snapshots that are older than 1 day:</p>
 <pre><code class="language-java">Table table = ...
 long tsToExpire = System.currentTimeMillis() - (1000 * 60 * 60 * 24); // 1 day
@@ -460,7 +481,7 @@ table.expireSnapshots()
      .expireOlderThan(tsToExpire)
      .commit();
 </code></pre>
-<p>See the <a href="../javadoc/0.11.1/org/apache/iceberg/ExpireSnapshots.html"><code>ExpireSnapshots</code> Javadoc</a> to see more configuration options.</p>
+<p>See the <a href="../javadoc/0.12.0/org/apache/iceberg/ExpireSnapshots.html"><code>ExpireSnapshots</code> Javadoc</a> to see more configuration options.</p>
 <p>There is also a Spark action that can run table expiration in parallel for large tables:</p>
 <pre><code class="language-java">Actions.forTable(table)
     .expireSnapshots()
@@ -504,7 +525,7 @@ Actions.forTable(table)
     .removeOrphanFiles()
     .execute();
 </code></pre>
-<p>See the <a href="../javadoc/0.11.1/org/apache/iceberg/actions/RemoveOrphanFilesAction.html">RemoveOrphanFilesAction Javadoc</a> to see more configuration options.</p>
+<p>See the <a href="../javadoc/0.12.0/org/apache/iceberg/actions/RemoveOrphanFilesAction.html">RemoveOrphanFilesAction Javadoc</a> to see more configuration options.</p>
 <p>This action may take a long time to finish if you have lots of files in data and metadata directories. It is recommended to execute this periodically, but you may not need to execute this often.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -531,7 +552,7 @@ Actions.forTable(table).rewriteDataFiles()
     .execute();
 </code></pre>
 <p>The <code>files</code> metadata table is useful for inspecting data file sizes and determining when to compact partitons.</p>
-<p>See the <a href="../javadoc/0.11.1/org/apache/iceberg/actions/RewriteDataFilesAction.html"><code>RewriteDataFilesAction</code> Javadoc</a> to see more configuration options.</p>
+<p>See the <a href="../javadoc/0.12.0/org/apache/iceberg/actions/RewriteDataFilesAction.html"><code>RewriteDataFilesAction</code> Javadoc</a> to see more configuration options.</p>
 <h3 id="rewrite-manifests">Rewrite manifests<a class="headerlink" href="#rewrite-manifests" title="Permanent link">&para;</a></h3>
 <p>Iceberg uses metadata in its manifest list and manifest files speed up query planning and to prune unnecessary data files. The metadata tree functions as an index over a table&rsquo;s data.</p>
 <p>Manifests in the metadata tree are automatically compacted in the order they are added, which makes queries faster when the write pattern aligns with read filters. For example, writing hourly-partitioned data as it arrives is aligned with time range query filters.</p>
@@ -543,7 +564,7 @@ table.rewriteManifests()
     .clusterBy(file -&gt; file.partition().get(0, Integer.class))
     .commit();
 </code></pre>
-<p>See the <a href="../javadoc/0.11.1/org/apache/iceberg/actions/RewriteManifestsAction.html"><code>RewriteManifestsAction</code> Javadoc</a> to see more configuration options.</p></div>
+<p>See the <a href="../javadoc/0.12.0/org/apache/iceberg/actions/RewriteManifestsAction.html"><code>RewriteManifestsAction</code> Javadoc</a> to see more configuration options.</p></div>
         
         
     </div>

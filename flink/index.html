@@ -121,6 +121,12 @@
                 
                 
                 
+                    <li >
+                        <a href="../getting-started/">Getting Started</a>
+                    </li>
+                
+                
+                
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -172,77 +178,92 @@
                 
                 
                 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Spark <b class="caret"></b></a>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Engines <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Spark</a>
+    <ul class="dropdown-menu">
+        
+            
 <li >
     <a href="../getting-started/">Getting Started</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-configuration/">Configuration</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-ddl/">DDL</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/">Queries</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-writes/">Writes</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-procedures/">Maintenance Procedures</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-structured-streaming/">Structured Streaming</a>
 </li>
 
-                        
-                            
+        
+            
 <li >
     <a href="../spark-queries/#time-travel">Time Travel</a>
 </li>
 
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Flink</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../hive/">Hive</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://prestodb.io/docs/current/connector/iceberg.html">PrestoDB</a>
+</li>
+
                         
                         </ul>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="https://trino.io/docs/current/connector/iceberg.html">Trino</a>
-                    </li>
-                
-                
-                
-                    <li class="active">
-                        <a href="./">Flink</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="../hive/">Hive</a>
                     </li>
                 
                 
@@ -650,7 +671,7 @@ In our example we&rsquo;re using <code>env.add_jars(..)</code> as shown below:</
 from pyflink.datastream import StreamExecutionEnvironment
 
 env = StreamExecutionEnvironment.get_execution_environment()
-iceberg_flink_runtime_jar = os.path.join(os.getcwd(), &quot;iceberg-flink-runtime-0.11.1.jar&quot;)
+iceberg_flink_runtime_jar = os.path.join(os.getcwd(), &quot;iceberg-flink-runtime-0.12.0.jar&quot;)
 
 env.add_jars(&quot;file://{}&quot;.format(iceberg_flink_runtime_jar))
 </code></pre>
@@ -850,7 +871,7 @@ stream.print();
 // Submit and execute this streaming read job.
 env.execute(&quot;Test Iceberg Batch Read&quot;);
 </code></pre>
-<p>There are other options that we could set by Java API, please see the <a href="../javadoc/0.11.1/org/apache/iceberg/flink/source/FlinkSource.html">FlinkSource#Builder</a>.</p>
+<p>There are other options that we could set by Java API, please see the <a href="../javadoc/0.12.0/org/apache/iceberg/flink/source/FlinkSource.html">FlinkSource#Builder</a>.</p>
 <h2 id="writing-with-datastream">Writing with DataStream<a class="headerlink" href="#writing-with-datastream" title="Permanent link">&para;</a></h2>
 <p>Iceberg support writing to iceberg table from different DataStream input.</p>
 <h3 id="appending-data">Appending data.<a class="headerlink" href="#appending-data" title="Permanent link">&para;</a></h3>
@@ -895,7 +916,7 @@ RewriteDataFilesActionResult result = Actions.forTable(table)
         .rewriteDataFiles()
         .execute();
 </code></pre>
-<p>For more doc about options of the rewrite files action, please see <a href="../javadoc/0.11.1/org/apache/iceberg/flink/actions/RewriteDataFilesAction.html">RewriteDataFilesAction</a></p>
+<p>For more doc about options of the rewrite files action, please see <a href="../javadoc/0.12.0/org/apache/iceberg/flink/actions/RewriteDataFilesAction.html">RewriteDataFilesAction</a></p>
 <h2 id="future-improvement">Future improvement.<a class="headerlink" href="#future-improvement" title="Permanent link">&para;</a></h2>
 <p>There are some features that we do not yet support in the current flink iceberg integration work:</p>
 <ul>
