@@ -87,11 +87,9 @@ public class TestProjectMetaColumn {
         .tableLoader(TableLoader.fromHadoopTable(location))
         .buildFormat();
 
-    List<RowData> results = Lists.newArrayList();
-    TestHelpers.readRowData(input, rowData -> {
+    List<RowData> results = TestHelpers.readRowData(input, SimpleDataUtil.ROW_TYPE, rowData -> {
       // If project to remove the meta columns, it will get a RowDataProjection.
       Assert.assertTrue(rowData instanceof GenericRowData);
-      results.add(TestHelpers.copyRowData(rowData, SimpleDataUtil.ROW_TYPE));
     });
 
     // Assert the results.
@@ -128,11 +126,9 @@ public class TestProjectMetaColumn {
         .tableLoader(TableLoader.fromHadoopTable(location))
         .buildFormat();
 
-    List<RowData> results = Lists.newArrayList();
-    TestHelpers.readRowData(input, rowData -> {
+    List<RowData> results = TestHelpers.readRowData(input, SimpleDataUtil.ROW_TYPE, rowData -> {
       // If project to remove the meta columns, it will get a RowDataProjection.
       Assert.assertTrue(rowData instanceof RowDataProjection);
-      results.add(TestHelpers.copyRowData(rowData, SimpleDataUtil.ROW_TYPE));
     });
 
     // Assert the results.

@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.typeutils.TypeSerializer;
 import org.apache.flink.api.java.typeutils.runtime.kryo.KryoSerializer;
@@ -81,31 +82,37 @@ public class TestHelpers {
     return kryo.deserialize(inputView);
   }
 
-  public static RowData copyRowData(RowData from, RowType rowType) {
+  public static List<RowData> readRowData(FlinkInputFormat input, RowType rowType,
+      Consumer<RowData> visitor) throws IOException {
+    List<RowData> results = Lists.newArrayList();
+
     TypeSerializer[] fieldSerializers = rowType.getChildren().stream()
         .map((LogicalType type) -> InternalSerializers.create(type))
         .toArray(TypeSerializer[]::new);
-    return RowDataUtil.clone(from, null, rowType, fieldSerializers);
-  }
 
-  public static void readRowData(FlinkInputFormat input, Consumer<RowData> visitor) throws IOException {
+    LogicalType[] logicalTypes = rowType.getChildren().toArray(new LogicalType[0]);
+    RowData.FieldGetter[] fieldGetters = IntStream.range(0, logicalTypes.length)
+        .mapToObj(i -> RowData.createFieldGetter(logicalTypes[i], i))
+        .toArray(RowData.FieldGetter[]::new);
+
     for (FlinkInputSplit s : input.createInputSplits(0)) {
       input.open(s);
       try {
         while (!input.reachedEnd()) {
           RowData row = input.nextRecord(null);
           visitor.accept(row);
+          results.add(RowDataUtil.clone(row, null, fieldSerializers, fieldGetters));
         }
       } finally {
         input.close();
       }
     }
+
+    return results;
   }
 
   public static List<RowData> readRowData(FlinkInputFormat inputFormat, RowType rowType) throws IOException {
-    List<RowData> results = Lists.newArrayList();
-    readRowData(inputFormat, row -> results.add(copyRowData(row, rowType)));
-    return results;
+    return readRowData(inputFormat, rowType, row -> { });
   }
 
   public static List<Row> readRows(FlinkInputFormat inputFormat, RowType rowType) throws IOException {

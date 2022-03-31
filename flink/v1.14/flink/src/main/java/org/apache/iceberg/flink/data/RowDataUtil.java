@@ -27,10 +27,10 @@ import org.apache.flink.api.common.typeutils.TypeSerializer;
 import org.apache.flink.table.data.DecimalData;
 import org.apache.flink.table.data.GenericRowData;
 import org.apache.flink.table.data.RowData;
+import org.apache.flink.table.data.RowData.FieldGetter;
 import org.apache.flink.table.data.StringData;
 import org.apache.flink.table.data.TimestampData;
 import org.apache.flink.table.runtime.typeutils.RowDataSerializer;
-import org.apache.flink.table.types.logical.RowType;
 import org.apache.iceberg.types.Type;
 import org.apache.iceberg.types.Types;
 import org.apache.iceberg.util.ByteBuffers;
@@ -81,18 +81,19 @@ public class RowDataUtil {
    * because the from RowData may contains additional column for position deletes.
    * Using {@link RowDataSerializer#copy(RowData, RowData)} will fail the arity check.
    */
-  public static RowData clone(RowData from, RowData reuse, RowType rowType, TypeSerializer[] fieldSerializers) {
+  public static RowData clone(RowData from, RowData reuse,
+      TypeSerializer[] fieldSerializers, FieldGetter[] fieldGetters) {
     GenericRowData ret;
     if (reuse instanceof GenericRowData) {
       ret = (GenericRowData) reuse;
     } else {
       ret = new GenericRowData(from.getArity());
     }
+
     ret.setRowKind(from.getRowKind());
-    for (int i = 0; i < rowType.getFieldCount(); i++) {
+    for (int i = 0; i < fieldGetters.length; i++) {
       if (!from.isNullAt(i)) {
-        RowData.FieldGetter getter = RowData.createFieldGetter(rowType.getTypeAt(i), i);
-        ret.setField(i, fieldSerializers[i].copy(getter.getFieldOrNull(from)));
+        ret.setField(i, fieldSerializers[i].copy(fieldGetters[i].getFieldOrNull(from)));
       } else {
         ret.setField(i, null);
       }
