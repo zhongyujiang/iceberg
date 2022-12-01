@@ -191,7 +191,7 @@ public class ParquetUtil {
     });
   }
 
-  private static MessageType getParquetTypeWithIds(ParquetMetadata metadata, NameMapping nameMapping) {
+  public static MessageType getParquetTypeWithIds(ParquetMetadata metadata, NameMapping nameMapping) {
     MessageType type = metadata.getFileMetaData().getSchema();
 
     if (ParquetSchemaUtil.hasIds(type)) {

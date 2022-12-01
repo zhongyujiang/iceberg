@@ -513,6 +513,7 @@ project(':iceberg-parquet') {
     }
 
     testImplementation project(path: ':iceberg-core', configuration: 'testArtifacts')
+    testImplementation project(path: ':iceberg-api', configuration: 'testArtifacts')
   }
 }
 
