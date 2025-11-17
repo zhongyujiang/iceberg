@@ -22,10 +22,13 @@ import static org.apache.iceberg.types.Types.NestedField.optional;
 import static org.apache.iceberg.types.Types.NestedField.required;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Set;
 import org.apache.iceberg.expressions.Literal;
+import org.apache.iceberg.relocated.com.google.common.collect.ImmutableList;
 import org.apache.iceberg.relocated.com.google.common.collect.ImmutableSet;
 import org.apache.iceberg.relocated.com.google.common.collect.Lists;
 import org.apache.iceberg.relocated.com.google.common.collect.Sets;
@@ -987,6 +990,25 @@ public class TestSchemaUpdate {
             .deleteColumn("id")
             .addColumn("id", optional(2, "id", Types.IntegerType.get()).type())
             .apply();
+
+    assertThat(updated.asStruct()).isEqualTo(expected.asStruct());
+  }
+
+  @Test
+  public void testUndelete() {
+    Schema schema = new Schema(required(1, "id", Types.IntegerType.get()));
+    Schema expected = new Schema(optional(1, "id", Types.IntegerType.get()));
+
+    Schema schema2 = new SchemaUpdate(schema, 1).deleteColumn("id").apply();
+
+    TableMetadata base = mock(TableMetadata.class);
+    when(base.schema()).thenReturn(schema2);
+    when(base.schemas()).thenReturn(ImmutableList.of(schema, schema2));
+
+    TableOperations ops = mock(TableOperations.class);
+    when(ops.current()).thenReturn(base);
+
+    Schema updated = new SchemaUpdate(ops).undeleteColumn(1).apply();
 
     assertThat(updated.asStruct()).isEqualTo(expected.asStruct());
   }

@@ -19,6 +19,7 @@
 package org.apache.iceberg;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,63 @@ class SchemaUpdate implements UpdateSchema {
   }
 
   @Override
+  public UpdateSchema undeleteColumn(String name) {
+    Preconditions.checkArgument(
+        schema.findField(name) == null, "Column already exists in the current schema");
+
+    Set<Integer> columnIds =
+        base.schemas().stream()
+            .filter(s -> s.schemaId() != schema.schemaId())
+            .map(s -> s.findField(name))
+            .filter(Objects::nonNull)
+            .map(Types.NestedField::fieldId)
+            .collect(Collectors.toSet());
+
+    if (columnIds.isEmpty()) {
+      throw new IllegalArgumentException(
+          String.format("The are no columns named %s in the old schemas", name));
+    } else if (columnIds.size() > 1) {
+      throw new IllegalArgumentException(
+          String.format("There are multiple columns named %s in the old schemas.", name));
+    } else {
+      undeleteColumn(Iterables.getOnlyElement(columnIds));
+      return this;
+    }
+  }
+
+  @Override
+  public UpdateSchema undeleteColumn(int columnId) {
+    // TODO validate deletes and adds
+    Preconditions.checkArgument(
+        schema.findField(columnId) == null, "Column already exists in the current schema");
+
+    List<Schema> allSchemas = Lists.newArrayList(base.schemas());
+    allSchemas.sort(Comparator.comparing(Schema::schemaId));
+
+    for (int i = allSchemas.size() - 2; i >= 0; i -= 1) {
+      Schema oldSchema = allSchemas.get(i);
+      Types.NestedField field = oldSchema.findField(columnId);
+      if (field != null) {
+        Map<Integer, Integer> parentLookup = TypeUtil.indexParents(oldSchema.asStruct());
+        // make sure the parent of the undelete column exists in the current schema
+        Integer parentId = parentLookup.getOrDefault(field.fieldId(), TABLE_ROOT_ID);
+        if (parentId != TABLE_ROOT_ID && schema.findField(parentId) == null) {
+          throw new UnsupportedOperationException(
+              String.format(
+                  "The parent column [id={%s}, name={%s}] of the undelete-column does not exist in the current schema",
+                  parentId, oldSchema.findColumnName(parentId)));
+        }
+
+        internalAddField(parentId, field.asOptional());
+        return this;
+      }
+    }
+
+    throw new IllegalArgumentException(
+        String.format("Column id %s does not exists in any old schemas", columnId));
+  }
+
+  @Override
   public UpdateSchema addRequiredColumn(
       String parent, String name, Type type, String doc, Literal<?> defaultValue) {
     internalAddColumn(parent, name, false, type, doc, defaultValue);
@@ -163,12 +221,6 @@ class SchemaUpdate implements UpdateSchema {
     // assign new IDs in order
     int newId = assignNewColumnId();
 
-    // update tracking for moves
-    addedNameToId.put(fullName, newId);
-    if (parentId != TABLE_ROOT_ID) {
-      idToParent.put(newId, parentId);
-    }
-
     Types.NestedField newField =
         Types.NestedField.builder()
             .withName(name)
@@ -180,8 +232,25 @@ class SchemaUpdate implements UpdateSchema {
             .withWriteDefault(defaultValue)
             .build();
 
-    updates.put(newId, newField);
-    parentToAddedIds.put(parentId, newId);
+    internalAddField(parentId, newField);
+  }
+
+  private void internalAddField(int parentId, Types.NestedField newField) {
+    String fullName;
+    if (parentId != TABLE_ROOT_ID) {
+      fullName = schema.findColumnName(parentId) + "." + newField.name();
+    } else {
+      fullName = newField.name();
+    }
+
+    // update tracking for moves
+    addedNameToId.put(fullName, newField.fieldId());
+    if (parentId != TABLE_ROOT_ID) {
+      idToParent.put(newField.fieldId(), parentId);
+    }
+
+    updates.put(newField.fieldId(), newField);
+    parentToAddedIds.put(parentId, newField.fieldId());
   }
 
   @Override

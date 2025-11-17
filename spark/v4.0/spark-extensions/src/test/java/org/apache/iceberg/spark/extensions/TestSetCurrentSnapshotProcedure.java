@@ -22,13 +22,17 @@ import static org.apache.iceberg.TableProperties.WRITE_AUDIT_PUBLISH_ENABLED;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.apache.iceberg.ParameterizedTestExtension;
+import org.apache.iceberg.Schema;
 import org.apache.iceberg.Snapshot;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.exceptions.ValidationException;
 import org.apache.iceberg.relocated.com.google.common.collect.ImmutableList;
 import org.apache.iceberg.relocated.com.google.common.collect.Iterables;
+import org.apache.iceberg.relocated.com.google.common.collect.Lists;
 import org.apache.spark.sql.AnalysisException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -40,6 +44,38 @@ public class TestSetCurrentSnapshotProcedure extends ExtensionsTestBase {
   @AfterEach
   public void removeTables() {
     sql("DROP TABLE IF EXISTS %s", tableName);
+  }
+
+  @TestTemplate
+  public void testSetCurrentSnapshotSchemaEvolution1() {
+    sql("CREATE TABLE %s (id bigint NOT NULL, data string, c1 string) USING iceberg", tableName);
+    sql("INSERT INTO TABLE %s VALUES (1, 'a', 'b')", tableName);
+
+    sql("ALTER TABLE %s DROP COLUMN c1", tableName);
+    sql("INSERT INTO TABLE %s VALUES (1, 'a')", tableName);
+
+    Table table = validationCatalog.loadTable(tableIdent);
+    table.updateSchema().undeleteColumn(3).commit();
+
+    table.refresh();
+    ArrayList<Snapshot> snapshots = Lists.newArrayList(table.snapshots());
+    Schema schema = table.schema();
+    System.out.println(snapshots);
+    System.out.println(schema);
+    sql("REFRESH TABLE %s", tableName);
+
+    sql("INSERT INTO TABLE %s VALUES (2, 'aa', 'bb')", tableName);
+
+    sql("ALTER TABLE %s ADD COLUMN c2 STRING", tableName);
+
+    sql("INSERT INTO TABLE %s VALUES (3, 'aa', 'bb', 'cc')", tableName);
+
+    List<Object[]> sql = sql("select * from %s", tableName);
+    table.refresh();
+    ArrayList<Snapshot> snapshots1 = Lists.newArrayList(table.snapshots());
+    Map<Integer, Schema> schemas = table.schemas();
+    System.out.println(snapshots1);
+    System.out.println(schemas);
   }
 
   @TestTemplate

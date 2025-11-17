@@ -239,6 +239,14 @@ public interface UpdateSchema extends PendingUpdate<Schema> {
     throw new UnsupportedOperationException("Default values are not supported");
   }
 
+  default UpdateSchema undeleteColumn(String name) {
+    throw new UnsupportedOperationException("Undelete columns are not supported");
+  }
+
+  default UpdateSchema undeleteColumn(int columnId) {
+    throw new UnsupportedOperationException("Undelete columns are not supported");
+  }
+
   /**
    * Add a new required top-level column.
    *
